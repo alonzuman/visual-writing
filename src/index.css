@@ -2,7 +2,6 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   color-scheme: light dark;
 
-  font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -51,6 +50,28 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Animate entrance expanding the width and the height */
+.visual-writer-word-preview-img-portal-enter {
+  width: 400px;
+  height: 400px;
+  animation: visual-writer-word-preview-img-portal-enter 0.2s
+    cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes visual-writer-word-preview-img-portal-enter {
+  0% {
+    opacity: 50%;
+    width: 100%;
+    height: 100%;
+  }
+
+  100% {
+    opacity: 100%;
+    width: 400px;
+    height: 400px;
+  }
 }
 
 @media (max-width: 768px) {

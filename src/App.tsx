@@ -9,6 +9,12 @@ export default function App() {
   return (
     <div className="demo">
       <VisualWriter value={value} onChange={(e) => setValue(e.target.value)} />
+      <p style={{ fontSize: 12 }}>
+        Credit to{" "}
+        <a href="https://rauno.me/craft" target="_blank">
+          Rauno Freiberg
+        </a>
+      </p>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Portal } from "react-portal";
 
 type Props = {
   value: string;
@@ -66,16 +67,35 @@ const VisualWriterWord = ({ word }: VisualWriterWordProps) => {
       <span ref={setRef} className="visual-writer-word">
         {img && (
           <div className="visual-writer-word-preview">
-            <img
-              src={img?.url}
-              className="visual-writer-word-preview-img"
-              style={{
-                opacity: isOverWord ? 1 : 0.5,
-                width: isOverWord ? 256 : "100%",
-                height: isOverWord ? 256 : "100%",
-                transition: "all 0.2s ease",
-              }}
-            />
+            {isOverWord ? (
+              <Portal>
+                <div
+                  style={{
+                    // TODO make sure it doesnt overflow the screen
+                    position: "absolute",
+                    top: rect?.top,
+                    left: rect?.left,
+                    width: rect?.width,
+                    height: rect?.height,
+                  }}
+                >
+                  <img
+                    src={img?.url}
+                    className="visual-writer-word-preview-img visual-writer-word-preview-img-portal-enter"
+                  />
+                </div>
+              </Portal>
+            ) : (
+              <img
+                src={img?.url}
+                className="visual-writer-word-preview-img"
+                style={{
+                  opacity: 0.5,
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            )}
           </div>
         )}
         {word}
