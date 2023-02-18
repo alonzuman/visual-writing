@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Portal } from "react-portal";
+import useSWR from "swr";
 
 type Props = {
   value: string;
@@ -32,10 +33,28 @@ type VisualWriterWordProps = {
   word: string;
 };
 
+const getKeywordFromUnsplash = (keyword: string) => {
+  const word = keyword.toLowerCase();
+  const isWordToIgnore = WORDS_TO_IGNORE.includes(word);
+
+  if (isWordToIgnore || word.length < 3) return "";
+  const image = IMAGES.find((img) => word?.includes(img.word));
+  if (image) return image.url;
+  return "";
+
+  // Fetch from unsplash in case you wanna be fancy
+  // return fetch(
+  //   `https://api.unsplash.com/search/photos?query=${word}&per_page=1&client_id=${clientKeys.UNSPLASH_API_KEY}`
+  // )
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     return data?.results?.[0]?.urls?.small;
+  //   });
+};
+
 const VisualWriterWord = ({ word }: VisualWriterWordProps) => {
-  const img = IMAGES.find((image) =>
-    word?.toLowerCase()?.replace(".", "")?.includes(image.word)
-  );
+  const { data } = useSWR(word, () => getKeywordFromUnsplash(word));
+  const img = data;
   const [ref, setRef] = useState<HTMLSpanElement | null>(null);
   const [isOverWord, setIsOverWord] = useState(false);
   const rect = ref?.getBoundingClientRect();
@@ -56,7 +75,6 @@ const VisualWriterWord = ({ word }: VisualWriterWordProps) => {
     };
 
     document.addEventListener("mousemove", onMouseMove);
-
     return () => {
       document.removeEventListener("mousemove", onMouseMove);
     };
@@ -80,14 +98,14 @@ const VisualWriterWord = ({ word }: VisualWriterWordProps) => {
                   }}
                 >
                   <img
-                    src={img?.url}
+                    src={img}
                     className="visual-writer-word-preview-img visual-writer-word-preview-img-portal-enter"
                   />
                 </div>
               </Portal>
             ) : (
               <img
-                src={img?.url}
+                src={img}
                 className="visual-writer-word-preview-img"
                 style={{
                   opacity: 0.5,
@@ -146,4 +164,95 @@ const IMAGES = [
     word: "time",
     url: "https://images.unsplash.com/photo-1501139083538-0139583c060f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
   },
+];
+
+const WORDS_TO_IGNORE = [
+  "for",
+  "and",
+  "nor",
+  "but",
+  "or",
+  "yet",
+  "so",
+  "after",
+  "although",
+  "as",
+  "as if",
+  "as long as",
+  "as much as",
+  "as soon as",
+  "as far as",
+  "as though",
+  "by the time",
+  "in as much as",
+  "inasmuch",
+  "in order to",
+  "in order that",
+  "in case",
+  "lest",
+  "though",
+  "now that",
+  "now since",
+  "now when",
+  "now",
+  "even if",
+  "even",
+  "even though",
+  "provided",
+  "provide that",
+  "if",
+  "if then",
+  "if when",
+  "if only",
+  "just as",
+  "where",
+  "wherever",
+  "whereas",
+  "where if",
+  "whether",
+  "since",
+  "because",
+  "whose",
+  "whoever",
+  "unless",
+  "while",
+  "before",
+  "why",
+  "so that",
+  "until",
+  "how",
+  "since",
+  "than",
+  "till",
+  "whenever",
+  "supposing",
+  "when",
+  "or not",
+  "what",
+  "the",
+  "is",
+  "where",
+  "it",
+  "to",
+  "of",
+  "in",
+  "on",
+  "at",
+  "by",
+  "from",
+  "with",
+  "up",
+  "about",
+  "into",
+  "over",
+  "after",
+  "the",
+  "a",
+  "an",
+  "and",
+  "but",
+  "or",
+  "for",
+  "nor",
+  "so",
 ];

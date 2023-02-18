@@ -3,7 +3,8 @@ import VisualWriter from "./visual-writer";
 
 export default function App() {
   const [value, setValue] = useState(
-    "Happiness can be found in the darkest of times if only one remembers to turn on the light. The quick brown fox jumps over the lazy dog."
+    // "Happiness can be found in the darkest of times if only one remembers to turn on the light. The quick brown fox jumps over the lazy dog."
+    ""
   );
 
   return (
